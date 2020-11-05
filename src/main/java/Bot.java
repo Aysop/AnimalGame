@@ -10,20 +10,28 @@ import java.util.*;
  */
 public class Bot {
 
-  public String getKey() {
-    return key;
+  String key = "";
+  BTree tree; //Binary Tree for storing questions and answers
+  String question;
+
+  public boolean isConcede() {
+    return concede;
   }
+
+  public void setConcede(boolean concede) {
+    this.concede = concede;
+  }
+
+  boolean concede = true;
+  boolean restart = false;
+  String newQuestion;
+  boolean gainInt = false;
+  String newAnimal;
+
 
   public void setKey(String key) {
     this.key = key;
   }
-
-  String key = "";
-
-  String dir = "";
-  BTree tree; //Binary Tree for storing questions and answers
-  char input;
-  String question;
 
   public String getNewQuestion() {
     return newQuestion;
@@ -33,51 +41,12 @@ public class Bot {
     this.newQuestion = newQuestion;
   }
 
-  String newQuestion;
-
-  boolean victory = false;
-  boolean restart = false;
-
-  public boolean isInquireQ() {
-    return inquireQ;
-  }
-
-  public void setInquireQ(boolean inquireQ) {
-    this.inquireQ = inquireQ;
-  }
-
-  boolean inquireQ = false;
-
-  public void setInquireAnimal(boolean inquireAnimal) {
-    this.inquireAnimal = inquireAnimal;
-  }
-
-  boolean inquireAnimal = false;
-
-  public void setInquireAns(boolean inquireAns) {
-    this.inquireAns = inquireAns;
-  }
-
-  boolean inquireAns = false;
-
   public boolean isGainInt() {
     return gainInt;
   }
 
   public void setGainInt(boolean gainInt) {
     this.gainInt = gainInt;
-  }
-
-  boolean gainInt = false;
-
-
-  public boolean isInquireAnimal() {
-    return inquireAnimal;
-  }
-
-
-  public boolean isInquireAns() {
-    return inquireAns;
   }
 
 
@@ -89,9 +58,6 @@ public class Bot {
     this.newAnimal = newAnimal;
   }
 
-  String newAnimal;
-
-
   public String getQuestion() {
     return question;
   }
@@ -100,31 +66,6 @@ public class Bot {
     this.question = question;
   }
 
-  public char getInput() {
-    return input;
-  }
-
-  public void setInput(char input) {
-    this.input = input;
-  }
-
-  public String getDir() {
-    return dir;
-  }
-
-  public void setDir(String dir) {
-    this.dir = dir;
-  }
-
-  public boolean isConcede() {
-    return concede;
-  }
-
-  public void setConcede(boolean concede) {
-    this.concede = concede;
-  }
-
-  boolean concede = false;
 
   /**
    * Default Constructor, creates a new Binary Tree
@@ -137,34 +78,36 @@ public class Bot {
    * This method asks the user questions and will try to guess what the animal is.
    */
   void determineQuestion() {
+
     if (tree.isEmpty()) {
       setBTreeRoot();
-    } else if (restart) {
-      restart();
-    } else if (victory) {
-      declareVictory();
-    }else if (inquireQ) {
-      inquireQuestion();
-    } else if (inquireAns) {
-      inquireAnswer();
-    }  else if (tree.isAtEnd()) {
-      guessAnimal();
     } else {
-      askQuestion();
+      switch (key) {
+        case "victory":
+          declareVictory();
+          break;
+        case "concede":
+          concede();
+          break;
+        case "inquireQ":
+          inquireQuestion();
+          break;
+        case "inquireAns":
+          inquireAnswer();
+          break;
+        default:
+          askQuestion();
+
+      }
     }
   }
 
+
   public void declareVictory() {
     setQuestion("I win! Let's go again?");
-    victory = false;
-    restart = true;
-  }
-
-  public void restart() {
     tree.setCurrentToStart();
-    setQuestion("Is it a " + tree.current.data + "?");
-    restart = false;
-    victory = false;
+    restart = true;
+    key = "";
   }
 
 
@@ -177,41 +120,39 @@ public class Bot {
   }
 
 
-  public void guessAnimal() {
-    /*AT END NODE*/
-    String animal = tree.current.data;
-    String question = "Is it " + vowelCheck(animal) + " " + animal + "?";
-    //DoWhile loop to check character entered and allow user to re-enter valid arguments
-    setQuestion(question);
-  }
-
   public void askQuestion() {
     /*ASKING QUESTION*/
-    String question = tree.current.data;//Question Node
+    String guess = tree.current.data;//Question Node
     //DoWhile loop to check character entered and allow user to re-enter valid arguments
 
-    if (question.equals("mammal")) {
-      setQuestion("Is it a " + question + "? Y/N");
+    if (guess.contains("?")) {
+      setQuestion(guess);
     } else {
-      setQuestion(question);
+      setQuestion("Is it a " + guess + "?");
     }
+
   }
 
   public void awaitResponse(char in) {
 
     switch (in) {
       case 'Y':
-        if (tree.isAtEnd()) {
-          victory = true;
+        if (restart) {
+          restart = false;
+          determineQuestion();
+        } else if (tree.isAtEnd()) {
+          key = "victory";
         } else {
           tree.moveCurrentYes();
         }
         break;
       case 'N':
         if (tree.isAtEnd()) {
-          concede();
+          key = "concede";
+          determineQuestion();
         } else if (tree.current.left == null) {
-          concede();
+          key = "concede";
+          determineQuestion();
         } else {
           tree.moveCurrentNo();
           askQuestion();
@@ -227,46 +168,48 @@ public class Bot {
    */
   void concede() {
 
-    setQuestion("I give up. What is it? ");
-    setInquireAnimal(true);
 
+    setQuestion("I give up. What is it?");
+    key = "inquireAnimal";
   }
 
   public void inquireQuestion() {
     String question; //Concatenated String
     String animal = tree.current.data; //guessed Animal
 
-    question =
-        "What question would you ask to tell the difference between " + vowelCheck(newAnimal)
-            + "\n" + newAnimal + " and " + vowelCheck(animal) + " " + animal + "?";
+
+    question = "What  yes or no question would you ask for a " + newAnimal + "?";
     setQuestion(question);
 
   }
 
-public void inquireAnswer(){
-  setQuestion("And your answer to this question would be? Y/N");
-  setGainInt(true);
-}
-
-public void gainIntelligence(String dir){
-  String newQuestion = getNewQuestion();
-  String newAnimal = getNewAnimal();
-
-  if (tree.current.data.equals(tree.root.data)) {
-    creatNewNode(newQuestion, dir, newAnimal);
-  } else {
-    if (tree.current.data.contains("?")) {
-      addQuestion(newQuestion, newAnimal);
-    } else {
-      addAnimal(newQuestion, newAnimal);
-    }
+  public void inquireAnswer() {
+    setQuestion("And your answer to this question for a " + newAnimal + " would be?");
+    setGainInt(true);
+    key = "";
+    concede = false;
   }
-  setQuestion("Okay, got it. Let's go again?");
-  inquireAns = false;
-  gainInt = false;
-  restart = true;
 
-}
+  public void gainIntelligence(String dir) {
+    String newQuestion = getNewQuestion();
+    String newAnimal = getNewAnimal();
+
+    if (tree.current.data.equals(tree.root.data)) {
+      creatNewNode(newQuestion, dir, newAnimal);
+    } else {
+      if (tree.current.data.contains("?")) {
+        addQuestion(newQuestion, newAnimal);
+      } else {
+        addAnimal(newQuestion, newAnimal);
+      }
+    }
+    setQuestion("Okay, got it. Let's go again?");
+
+    tree.setCurrentToStart();
+    gainInt = false;
+    restart = true;
+
+  }
 
 
   public void creatNewNode(String newQuestion, String dir, String newAnimal) {

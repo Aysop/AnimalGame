@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 
 
 public class Controller {
+
   @FXML
   public Label botOut;
   public Button butt_teach;
@@ -20,8 +21,6 @@ public class Controller {
   public void initialize() {
     bot.determineQuestion();
     botOut.setText(bot.getQuestion());
-    butt_no.setVisible(true);
-    butt_yes.setVisible(true);
 
     userField.setVisible(false);
     butt_teach.setVisible(false);
@@ -29,68 +28,74 @@ public class Controller {
 
   public void clickYes(MouseEvent mouseEvent) {
 
-    if (bot.isGainInt()){
+    if (bot.isGainInt()) {
       bot.gainIntelligence("y");
       botOut.setText(bot.getQuestion());
-
-    }else {
-
+    } else {
       butt_no.setVisible(true);
       butt_yes.setVisible(true);
-
       userField.setVisible(false);
       butt_teach.setVisible(false);
 
+      bot.setKey("");
       bot.awaitResponse('Y');
-      initialize();
-
+      bot.determineQuestion();
+      botOut.setText(bot.getQuestion());
     }
-
 
   }
 
   public void clickNo(MouseEvent mouseEvent) {
 
+    if (bot.isGainInt()) {
+      bot.gainIntelligence("n");
+      botOut.setText(bot.getQuestion());
+    } else {
 
-    if(bot.concede) {
-      userField.setVisible(true);
-      butt_teach.setVisible(true);
-      butt_no.setVisible(false);
-      butt_yes.setVisible(false);
+      if(bot.tree.isAtEnd() || bot.tree.current.left == null){
+        bot.setConcede(true);
+      }else {
+        bot.setConcede(false);
+      }
 
-    }else {
-      butt_no.setVisible(true);
-      butt_yes.setVisible(true);
-      userField.setVisible(false);
-      butt_teach.setVisible(false);
+      if (bot.concede) {
+        userField.setVisible(true);
+        butt_teach.setVisible(true);
+        butt_no.setVisible(false);
+        butt_yes.setVisible(false);
+      } else {
+        butt_no.setVisible(true);
+        butt_yes.setVisible(true);
+        userField.setVisible(false);
+        butt_teach.setVisible(false);
+      }
+
+      bot.setKey("");
+      bot.awaitResponse('N');
+      botOut.setText(bot.getQuestion());
     }
-    bot.awaitResponse('N');
-    botOut.setText(bot.getQuestion());
-
   }
 
 
   public void teachAI(ActionEvent actionEvent) {
 
-   if (bot.isInquireAnimal()) {
-     bot.setNewAnimal(userField.getText());
-     userField.clear();
-     bot.setInquireAnimal(false);
-     bot.setInquireQ(true);
-     bot.determineQuestion();
-     botOut.setText(bot.getQuestion());
-   } else if(bot.isInquireQ()){
-     bot.setNewQuestion(userField.getText());
-     userField.clear();
-     bot.setInquireQ(false);
-     bot.setInquireAns(true);
-     bot.determineQuestion();
-     botOut.setText(bot.getQuestion());
-     userField.setVisible(false);
-     butt_no.setVisible(true);
-     butt_yes.setVisible(true);
-     butt_teach.setVisible(false);
-     }
-   }
+    if (bot.key.equals("inquireAnimal")) {
+      bot.setNewAnimal(userField.getText());
+      userField.clear();
+      bot.setKey("inquireQ");
+      bot.determineQuestion();
+      botOut.setText(bot.getQuestion());
+    } else if (bot.key.equals("inquireQ")) {
+      bot.setNewQuestion(userField.getText());
+      userField.clear();
+      bot.setKey("inquireAns");
+      bot.determineQuestion();
+      botOut.setText(bot.getQuestion());
+      userField.setVisible(false);
+      butt_no.setVisible(true);
+      butt_yes.setVisible(true);
+      butt_teach.setVisible(false);
+    }
   }
+}
 
