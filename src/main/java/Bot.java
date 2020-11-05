@@ -10,24 +10,22 @@ import java.util.*;
  */
 public class Bot {
 
-  String key = "";
   BTree tree; //Binary Tree for storing questions and answers
+  boolean concede = true;
+  boolean gainInt = false;
+  boolean restart = false;
+  String key = "";
+  String newQuestion;
+  String newAnimal;
   String question;
-
-  public boolean isConcede() {
-    return concede;
-  }
 
   public void setConcede(boolean concede) {
     this.concede = concede;
   }
 
-  boolean concede = true;
-  boolean restart = false;
-  String newQuestion;
-  boolean gainInt = false;
-  String newAnimal;
-
+  public boolean isGainInt() {
+    return gainInt;
+  }
 
   public void setKey(String key) {
     this.key = key;
@@ -40,15 +38,6 @@ public class Bot {
   public void setNewQuestion(String newQuestion) {
     this.newQuestion = newQuestion;
   }
-
-  public boolean isGainInt() {
-    return gainInt;
-  }
-
-  public void setGainInt(boolean gainInt) {
-    this.gainInt = gainInt;
-  }
-
 
   public String getNewAnimal() {
     return newAnimal;
@@ -80,7 +69,7 @@ public class Bot {
   void determineQuestion() {
 
     if (tree.isEmpty()) {
-      setBTreeRoot();
+      setBTree();
     } else {
       switch (key) {
         case "victory":
@@ -105,17 +94,19 @@ public class Bot {
 
   public void declareVictory() {
     setQuestion("I win! Let's go again?");
-    tree.setCurrentToStart();
+    tree.setCurrentToRoot();
     restart = true;
     key = "";
   }
 
 
-  public void setBTreeRoot() {
+  public void setBTree() {
     /*TREE IS EMPTY*/
+
     tree.Insert("mammal", null);
-    tree.setCurrentToStart();
+    tree.setCurrentToRoot();
     tree.Insert("dog", "Y");
+    tree.Insert("fish", "N");
     determineQuestion();
   }
 
@@ -147,15 +138,12 @@ public class Bot {
         }
         break;
       case 'N':
-        if (tree.isAtEnd()) {
-          key = "concede";
-          determineQuestion();
-        } else if (tree.current.left == null) {
+        if (tree.current.left == null) {
           key = "concede";
           determineQuestion();
         } else {
           tree.moveCurrentNo();
-          askQuestion();
+          determineQuestion();
         }
         break;
     }
@@ -168,15 +156,12 @@ public class Bot {
    */
   void concede() {
 
-
     setQuestion("I give up. What is it?");
     key = "inquireAnimal";
   }
 
   public void inquireQuestion() {
     String question; //Concatenated String
-    String animal = tree.current.data; //guessed Animal
-
 
     question = "What  yes or no question would you ask for a " + newAnimal + "?";
     setQuestion(question);
@@ -185,7 +170,7 @@ public class Bot {
 
   public void inquireAnswer() {
     setQuestion("And your answer to this question for a " + newAnimal + " would be?");
-    setGainInt(true);
+    gainInt = true;
     key = "";
     concede = false;
   }
@@ -200,12 +185,12 @@ public class Bot {
       if (tree.current.data.contains("?")) {
         addQuestion(newQuestion, newAnimal);
       } else {
-        addAnimal(newQuestion, newAnimal);
+        addAnimal(newQuestion, newAnimal, dir);
       }
     }
     setQuestion("Okay, got it. Let's go again?");
 
-    tree.setCurrentToStart();
+    tree.setCurrentToRoot();
     gainInt = false;
     restart = true;
 
@@ -221,7 +206,7 @@ public class Bot {
     tree.moveCurrentNo();
     //moves new newAnimal to the right of new question
     tree.current.right = new Node(newAnimal);
-    tree.setCurrentToStart();
+    tree.setCurrentToRoot();
   }
 
   public void addQuestion(String newQuestion, String newAnimal) {
@@ -229,18 +214,26 @@ public class Bot {
     tree.current.left = new Node(newQuestion);
     //Create new left.right node
     tree.current.left.right = new Node(newAnimal);
-    tree.setCurrentToStart();
+    tree.setCurrentToRoot();
   }
 
-  public void addAnimal(String newQuestion, String newAnimal) {
+  public void addAnimal(String newQuestion, String newAnimal, String dir) {
     String animal = tree.current.data;
     //the new question replaces the animal node
     tree.current.data = newQuestion;
     //the animal is pushed to the left
-    tree.current.left = new Node(animal);
-    //the new correct newAnimal placed to the right
-    tree.current.right = new Node(newAnimal);
-    tree.setCurrentToStart();
+
+    if (dir.equals("Y")) {
+      tree.current.left = new Node(animal);
+      //the new correct newAnimal placed to the right
+      tree.current.right = new Node(newAnimal);
+    } else {
+      tree.current.left = new Node(newAnimal);
+      //the new correct newAnimal placed to the right
+      tree.current.right = new Node(animal);
+    }
+
+    tree.setCurrentToRoot();
   }
 
   /**

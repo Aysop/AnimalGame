@@ -29,7 +29,7 @@ public class Controller {
   public void clickYes(MouseEvent mouseEvent) {
 
     if (bot.isGainInt()) {
-      bot.gainIntelligence("y");
+      bot.gainIntelligence("Y");
       botOut.setText(bot.getQuestion());
     } else {
       butt_no.setVisible(true);
@@ -48,13 +48,13 @@ public class Controller {
   public void clickNo(MouseEvent mouseEvent) {
 
     if (bot.isGainInt()) {
-      bot.gainIntelligence("n");
+      bot.gainIntelligence("N");
       botOut.setText(bot.getQuestion());
     } else {
 
-      if(bot.tree.isAtEnd() || bot.tree.current.left == null){
+      if (bot.tree.isAtEnd() || bot.tree.current.left == null) {
         bot.setConcede(true);
-      }else {
+      } else {
         bot.setConcede(false);
       }
 

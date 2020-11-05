@@ -41,7 +41,7 @@
                   </Button>
                </children>
             </GridPane>
-            <Label fx:id="botOut" layoutX="120.0" layoutY="94.0" prefHeight="74.0" prefWidth="360.0" />
+            <Label fx:id="botOut" layoutX="203.0" layoutY="106.0" prefHeight="74.0" prefWidth="194.0" />
             <TextField fx:id="userField" layoutX="81.0" layoutY="223.0" prefHeight="25.0" prefWidth="438.0" />
          </children>
       </Pane>

@@ -66,7 +66,7 @@ public class BTree {
   /**
    * Moves current to root, the starting point.
    */
-  void setCurrentToStart() {
+  void setCurrentToRoot() {
     current = root;
 
   }
@@ -89,6 +89,7 @@ public class BTree {
       return newRoot;
     } else if (dir.equals("Y")) {
       // 	System.out.println("YES INSERTED");
+
       newRoot.right = InsertItem(newRoot.right, value, dir);
     } else {
       //	System.out.println("NO INSERTED");
