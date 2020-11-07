@@ -18,7 +18,7 @@ public class Main extends Application {
 
     Scene scene = new Scene(root);
 
-    primaryStage.setTitle("FXML Welcome");
+    primaryStage.setTitle("Nigel's Thornberry's Great Animal Guessing Game");
 
     primaryStage.setScene(scene);
 

@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 
@@ -15,6 +17,10 @@ public class Controller {
   public Button butt_no;
   public Button butt_yes;
   public TextField userField;
+  public ImageView nigel;
+
+  @FXML
+  private ImageView darwin;
 
   Bot bot = new Bot();
 
@@ -22,15 +28,30 @@ public class Controller {
     bot.determineQuestion();
     botOut.setText(bot.getQuestion());
 
+    Image nigelImg = new Image("Nigel_Point.png");
+    nigel.setImage(nigelImg);
+
     userField.setVisible(false);
     butt_teach.setVisible(false);
   }
 
   public void clickYes(MouseEvent mouseEvent) {
 
+    if (bot.tree.current.left == null || bot.tree.current.right == null) {
+      Image nigelImg = new Image("Nigel_Curious.png");
+      nigel.setImage(nigelImg);
+    } else {
+      Image nigelImg = new Image("Nigel_Point.png");
+      nigel.setImage(nigelImg);
+    }
+
     if (bot.isGainInt()) {
       bot.gainIntelligence("Y");
       botOut.setText(bot.getQuestion());
+      darwin.setImage(null);
+      Image nigelImg = new Image("Nigel_Point.png");
+      nigel.setImage(nigelImg);
+
     } else {
       butt_no.setVisible(true);
       butt_yes.setVisible(true);
@@ -59,6 +80,9 @@ public class Controller {
       }
 
       if (bot.concede) {
+        nigel.setImage(null);
+        Image darwinImg = new Image("darwin.png");
+        darwin.setImage(darwinImg);
         userField.setVisible(true);
         butt_teach.setVisible(true);
         butt_no.setVisible(false);
@@ -77,7 +101,7 @@ public class Controller {
   }
 
 
-  public void teachAI(ActionEvent actionEvent) {
+  public void teachAI(MouseEvent actionEvent) {
 
     if (bot.key.equals("inquireAnimal")) {
       bot.setNewAnimal(userField.getText());
@@ -98,4 +122,3 @@ public class Controller {
     }
   }
 }
-

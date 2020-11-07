@@ -1,3 +1,28 @@
 .root {
   -fx-background-color: white;
 }
+
+.butt_teach{
+  -fx-background-image: url("nana2.png");
+
+  -fx-background-size: 100% 100%;
+
+  -fx-background-repeat: no-repeat;
+}
+
+.butt_yes{
+  -fx-background-image: url("Yes_Button.png");
+
+  -fx-background-size: 100% 100%;
+
+  -fx-background-repeat: no-repeat;
+}
+
+.butt_no{
+  -fx-background-image: url("No_Button.png");
+
+  -fx-background-size: 100% 100%;
+
+  -fx-background-repeat: no-repeat;
+}
+
