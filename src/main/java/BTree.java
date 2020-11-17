@@ -1,7 +1,5 @@
 /**
- * This class creates a Binary Tree that hold Nodes filled with a String.
- *
- * @author chao
+ * This class creates a Binary Tree that hold Nodes filled with an animal or question.
  */
 public class BTree {
 
@@ -11,7 +9,7 @@ public class BTree {
 
 
   /**
-   * Default Constructor, sets root and current to null.
+   * Default Constructor sets root and current node to null.
    */
   BTree() {
     root = null;
@@ -19,7 +17,7 @@ public class BTree {
   }
 
   /**
-   * Inserts String info into Binary Tree based on String Move using a private recursive function.
+   * Inserts String info into binary tree using a recursive function.
    *
    * @param info Value to be inserted into Binary Tree
    * @param move Value that is considered in order to properly place info
@@ -30,9 +28,9 @@ public class BTree {
 
 
   /**
-   * Evaluates whether or not Binary Tree is empty or not
+   * Determines whether or not Binary Tree is empty or not
    *
-   * @return trueOrfalse True if root equals null
+   * @return True if root is null
    */
 
   boolean isEmpty() {
@@ -42,7 +40,7 @@ public class BTree {
   /**
    * Evaluates whether or not current is located at a ending leaf/child node
    *
-   * @return trueOrfalse True if current has to nodes to travel to
+   * @return True if node isn't at tree end
    */
 
   boolean isAtEnd() {
@@ -50,34 +48,33 @@ public class BTree {
   }
 
   /**
-   * Moves current pointer to the following right node, signaling a YES
+   * Moves current pointer to the following right node
    */
   void moveCurrentYes() {
     current = current.right;
   }
 
   /**
-   * Moves current pointer to the following left node, signaling a NO
+   * Moves current pointer to the following left node
    */
   void moveCurrentNo() {
     current = current.left;
   }
 
   /**
-   * Moves current to root, the starting point.
+   * Makes current node the root.
    */
   void setCurrentToRoot() {
     current = root;
 
   }
 
-  //Recursive Functions
 
   /**
    * Inserts String value into the appropriate node. If newRoot is not fill then this method will
    * fill it recursively
    *
-   * @param newRoot node that is considered for insertion
+   * @param newRoot Node that's being  inserted
    * @param value   String to be inserted into new Node
    * @param dir     String that determines where to place other String values
    * @return newRoot The node that was inserted into the Binary Tree
@@ -85,14 +82,10 @@ public class BTree {
   private Node InsertItem(Node newRoot, String value, String dir) {
     if (newRoot == null) {
       newRoot = new Node(value);
-      //			System.out.println("ROOT INSERTED");
       return newRoot;
     } else if (dir.equals("Y")) {
-      // 	System.out.println("YES INSERTED");
-
       newRoot.right = InsertItem(newRoot.right, value, dir);
     } else {
-      //	System.out.println("NO INSERTED");
       newRoot.left = InsertItem(newRoot.left, value, dir);
     }
     return newRoot;

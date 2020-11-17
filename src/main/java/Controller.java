@@ -1,12 +1,13 @@
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 
 public class Controller {
@@ -27,6 +28,7 @@ public class Controller {
   public void initialize() {
     bot.determineQuestion();
     botOut.setText(bot.getQuestion());
+    playMusic();
 
     Image nigelImg = new Image("Nigel_Point.png");
     nigel.setImage(nigelImg);
@@ -71,6 +73,12 @@ public class Controller {
     if (bot.isGainInt()) {
       bot.gainIntelligence("N");
       botOut.setText(bot.getQuestion());
+      darwin.setImage(null);
+      Image nigelImg = new Image("Nigel_Point.png");
+      nigel.setImage(nigelImg);
+    } else if (bot.restart) {
+      bot.setExit(false);
+      System.exit(1);
     } else {
 
       if (bot.tree.isAtEnd() || bot.tree.current.left == null) {
@@ -119,6 +127,18 @@ public class Controller {
       butt_no.setVisible(true);
       butt_yes.setVisible(true);
       butt_teach.setVisible(false);
+    }
+  }
+
+  public void playMusic(){
+    try {
+      Clip clip = AudioSystem.getClip();
+      AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+          Main.class.getResourceAsStream("bgMusic.wav"));
+      clip.open(inputStream);
+      clip.start();
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
     }
   }
 }

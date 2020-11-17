@@ -10,8 +10,25 @@
   -fx-background-repeat: no-repeat;
 }
 
+.butt_teach:hover{
+  -fx-background-image: url("nanaHover.png");
+
+  -fx-background-size: 100% 100%;
+
+  -fx-background-repeat: no-repeat;
+}
+
+
 .butt_yes{
   -fx-background-image: url("Yes_Button.png");
+
+  -fx-background-size: 100% 100%;
+
+  -fx-background-repeat: no-repeat;
+}
+
+.butt_yes:hover{
+  -fx-background-image: url("Yes_Button_Hover.png");
 
   -fx-background-size: 100% 100%;
 
@@ -25,4 +42,14 @@
 
   -fx-background-repeat: no-repeat;
 }
+
+.butt_no:hover{
+  -fx-background-image: url("No_Button_Hover.png");
+
+  -fx-background-size: 100% 100%;
+
+  -fx-background-repeat: no-repeat;
+
+}
+
 

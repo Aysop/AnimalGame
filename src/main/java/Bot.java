@@ -1,23 +1,29 @@
 import java.util.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 /**
- * This class creates a "Bot" that operates as the programs voice and prompter. It creates a new
- * Binary Tree and manipulates it using methods belonging to the BinaryTree class. This "Bot" will
- * ask the questions and insert answers into a Binary Tree. It will keep guessing until it gives up
- * or reaches a correct answer.
- *
- * @author chao
+ * Bot class that creates new instance of the AI, that acts as the programs director by asking the
+ * user yes/no questions until the animal they're thinking of is guessed, or is given a new question
+ * to ask by the user if the animal can't be determined. The bot also creates a BTree class that
+ * acts as it's decision making center.
  */
 public class Bot {
 
   BTree tree; //Binary Tree for storing questions and answers
-  boolean concede = true;
+  boolean concede = true; // The following booleans act as flags to trigger certain events
   boolean gainInt = false;
   boolean restart = false;
+  boolean exit = false;
   String key = "";
   String newQuestion;
   String newAnimal;
   String question;
+
+  public void setExit(boolean exit) {
+    this.exit = exit;
+  }
 
   public void setConcede(boolean concede) {
     this.concede = concede;
@@ -86,6 +92,7 @@ public class Bot {
           break;
         default:
           askQuestion();
+          break;
 
       }
     }
@@ -93,9 +100,21 @@ public class Bot {
 
 
   public void declareVictory() {
-    setQuestion("I win! Let's go again?");
+
+    try {
+      Clip clip = AudioSystem.getClip();
+      AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+          Main.class.getResourceAsStream("Smashing.wav"));
+      clip.open(inputStream);
+      clip.start();
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+
+    setQuestion("Smashing, I win! Let's go again?");
     tree.setCurrentToRoot();
     restart = true;
+    exit = true;
     key = "";
   }
 
@@ -114,12 +133,11 @@ public class Bot {
   public void askQuestion() {
     /*ASKING QUESTION*/
     String guess = tree.current.data;//Question Node
-    //DoWhile loop to check character entered and allow user to re-enter valid arguments
 
     if (guess.contains("?")) {
       setQuestion(guess);
     } else {
-      setQuestion("Is it a " + guess + "?");
+      setQuestion("Is it " + vowelCheck(guess) + guess + "?");
     }
 
   }
@@ -163,13 +181,15 @@ public class Bot {
   public void inquireQuestion() {
     String question; //Concatenated String
 
-    question = "What  yes or no question would you ask for a " + newAnimal + "?";
+    question =
+        "What  yes or no question would you ask for " + vowelCheck(newAnimal) + newAnimal + "?";
     setQuestion(question);
 
   }
 
   public void inquireAnswer() {
-    setQuestion("And your answer to this question for a " + newAnimal + " would be?");
+    setQuestion(
+        "And your answer to this question for " + vowelCheck(newAnimal) + newAnimal + " would be?");
     gainInt = true;
     key = "";
     concede = false;
@@ -239,8 +259,8 @@ public class Bot {
   /**
    * This method places correct grammatical structure, a or an, in front of an animal string.
    *
-   * @param animal The animal that needs to be analyzed
-   * @return aOran an if the animal's first letter begins with a vowel, a for anything else
+   * @param animal The animal name that needs to be evaluated
+   * @return a or an depending if the animal's first letter
    */
   String vowelCheck(String animal) {
     char firstLetter;
@@ -255,9 +275,10 @@ public class Bot {
     firstLetter = animal.toUpperCase().charAt(0);
 
     if (vowels.contains(firstLetter)) {
-      return "an";
+      return "an ";
     } else {
-      return "a";
+      return "a ";
     }
   }
+
 }

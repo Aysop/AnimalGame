@@ -1,7 +1,5 @@
 /**
- * This class creates a Node that holds a String and left,right nodes. 
- * @author chao
- *
+ * This class creates a Node that holds a String and left,right nodes.
  */
 public class Node {
 
@@ -10,8 +8,8 @@ public class Node {
   protected String data;
 
   /**
-   * Non-default Constructor, sets left and right nodes to null and sets String data to info
-   * @param info String value
+   * Sets left and right nodes to null and sets String data to info
+   * @param info String
    */
   Node(String info) {
     left = null;
