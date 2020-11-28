@@ -18,6 +18,10 @@ public class Controller {
   public Button butt_yes;
   public TextField userField;
   public ImageView nigel;
+  public ImageView speechBub;
+  public ImageView background;
+  public ImageView borderR;
+  public ImageView borderL;
 
   @FXML
   private ImageView darwin;
@@ -28,6 +32,9 @@ public class Controller {
     bot.determineQuestion();
     botOut.setText(bot.getQuestion());
     playMusic();
+
+    Image bg = new Image("landscape.jpg");
+    background.setImage(bg);
 
     Image nigelImg = new Image("Nigel_Point.png");
     nigel.setImage(nigelImg);
@@ -50,6 +57,8 @@ public class Controller {
       bot.gainIntelligence("Y");
       botOut.setText(bot.getQuestion());
       darwin.setImage(null);
+      Image bg = new Image("landscape.jpg");
+      background.setImage(bg);
       Image nigelImg = new Image("Nigel_Point.png");
       nigel.setImage(nigelImg);
 
@@ -73,6 +82,8 @@ public class Controller {
       bot.gainIntelligence("N");
       botOut.setText(bot.getQuestion());
       darwin.setImage(null);
+      Image bg = new Image("landscape.jpg");
+      background.setImage(bg);
       Image nigelImg = new Image("Nigel_Point.png");
       nigel.setImage(nigelImg);
     } else if (bot.restart) {
@@ -88,6 +99,8 @@ public class Controller {
 
       if (bot.concede) {
         nigel.setImage(null);
+        Image bg = new Image("landscape2.jpg");
+        background.setImage(bg);
         Image darwinImg = new Image("darwin.png");
         darwin.setImage(darwinImg);
         userField.setVisible(true);

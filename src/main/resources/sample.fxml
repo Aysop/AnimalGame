@@ -17,11 +17,7 @@
    <children>
       <Pane layoutX="-2.0" prefHeight="930.0" prefWidth="1278.0">
          <children>
-            <ImageView fitHeight="930.0" fitWidth="1278.0" opacity="0.6" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@landscape.jpg" />
-               </image>
-            </ImageView>
+            <ImageView fx:id="background" fitHeight="930.0" fitWidth="1278.0" opacity="0.6" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="borderR" fitHeight="1166.0" fitWidth="643.0" layoutX="639.0" layoutY="-75.0" opacity="0.95" pickOnBounds="true">
                <image>
                   <Image url="@jungle-right.png" />
