@@ -99,10 +99,13 @@ public class Controller {
 
       if (bot.concede) {
         nigel.setImage(null);
+
+          Image darwinImg = new Image("darwin.png");
+          darwin.setImage(darwinImg);
+
+
         Image bg = new Image("landscape2.jpg");
         background.setImage(bg);
-        Image darwinImg = new Image("darwin.png");
-        darwin.setImage(darwinImg);
         userField.setVisible(true);
         butt_teach.setVisible(true);
         butt_no.setVisible(false);
@@ -124,12 +127,16 @@ public class Controller {
   public void teachAI(MouseEvent actionEvent) {
 
     if (bot.key.equals("inquireAnimal")) {
+      Image darwinImg = new Image("darwin2.png");
+      darwin.setImage(darwinImg);
       bot.setNewAnimal(userField.getText());
       userField.clear();
       bot.setKey("inquireQ");
       bot.determineQuestion();
       botOut.setText(bot.getQuestion());
     } else if (bot.key.equals("inquireQ")) {
+      Image darwinImg = new Image("darwin.png");
+      darwin.setImage(darwinImg);
       bot.setNewQuestion(userField.getText());
       userField.clear();
       bot.setKey("inquireAns");
