@@ -173,6 +173,15 @@ public class Bot {
    * animal and a question that describes it.
    */
   void concede() {
+    try {
+      Clip clip = AudioSystem.getClip();
+      AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+          Main.class.getResourceAsStream("chimp.wav"));
+      clip.open(inputStream);
+      clip.start();
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
 
     setQuestion("I give up. What is it?");
     key = "inquireAnimal";
