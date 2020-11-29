@@ -52,4 +52,19 @@
 
 }
 
+.butt_sound{
+  -fx-background-image: url("soundOn.png");
+
+  -fx-background-size: 100% 100%;
+
+  -fx-background-repeat: no-repeat;
+}
+.butt_no_sound{
+  -fx-background-image: url("soundOff.png");
+
+  -fx-background-size: 100% 100%;
+
+  -fx-background-repeat: no-repeat;
+}
+
 

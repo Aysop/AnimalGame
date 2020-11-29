@@ -1,3 +1,4 @@
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,6 +9,8 @@ import javafx.scene.input.MouseEvent;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Controller {
 
@@ -22,11 +25,28 @@ public class Controller {
   public ImageView background;
   public ImageView borderR;
   public ImageView borderL;
+  public Button soundButton;
 
   @FXML
   private ImageView darwin;
 
+  boolean isPlaying = false;
+
   Bot bot = new Bot();
+
+  Clip clip;
+
+  {
+    try {
+      clip = AudioSystem.getClip();
+      AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+          Main.class.getResourceAsStream("bgMusic.wav"));
+      clip.open(inputStream);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
 
   public void initialize() {
     bot.determineQuestion();
@@ -100,9 +120,8 @@ public class Controller {
       if (bot.concede) {
         nigel.setImage(null);
 
-          Image darwinImg = new Image("darwin.png");
-          darwin.setImage(darwinImg);
-
+        Image darwinImg = new Image("darwin.png");
+        darwin.setImage(darwinImg);
 
         Image bg = new Image("landscape2.jpg");
         background.setImage(bg);
@@ -149,15 +168,19 @@ public class Controller {
     }
   }
 
-  public void playMusic(){
-    try {
-      Clip clip = AudioSystem.getClip();
-      AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-          Main.class.getResourceAsStream("bgMusic.wav"));
-      clip.open(inputStream);
-      clip.start();
-    } catch (Exception e) {
-      System.err.println(e.getMessage());
+  public void playMusic() {
+    clip.start();
+  }
+
+  public void stopMusic() {
+    clip.stop();
+  }
+
+  public void muteMusic(MouseEvent mouseEvent) {
+    if (clip.isRunning()) {
+      stopMusic();
+    } else {
+      playMusic();
     }
   }
 }

@@ -80,6 +80,7 @@
                <font>
                   <Font name="Ink Free" size="22.0" />
                </font></Label>
+            <Button fx:id="soundButton" layoutX="995.0" layoutY="769.0" mnemonicParsing="false" onMouseClicked="#muteMusic" prefHeight="59.0" prefWidth="65.0" style="-fx-background-color: null;" styleClass="butt_sound" />
          </children>
       </Pane>
    </children>
